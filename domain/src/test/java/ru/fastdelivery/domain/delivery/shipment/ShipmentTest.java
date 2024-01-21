@@ -1,6 +1,8 @@
 package ru.fastdelivery.domain.delivery.shipment;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import ru.fastdelivery.domain.common.currency.Currency;
 import ru.fastdelivery.domain.common.currency.CurrencyFactory;
 import ru.fastdelivery.domain.common.volume.Volume;
 import ru.fastdelivery.domain.common.weight.Weight;
@@ -12,6 +14,8 @@ import java.math.BigInteger;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 class ShipmentTest {
 
@@ -30,4 +34,20 @@ class ShipmentTest {
 
         assertThat(massOfShipment.weightGrams()).isEqualByComparingTo(BigInteger.valueOf(11));
     }
+
+    @Test
+    void testVolumeAllPackages() {
+
+        PackVolume volume1 = Mockito.mock(PackVolume.class);
+        PackVolume volume2 = Mockito.mock(PackVolume.class);
+
+        when(volume1.cargoVolume()).thenReturn(BigDecimal.valueOf(100));
+        when(volume2.cargoVolume()).thenReturn(BigDecimal.valueOf(50));
+
+        Shipment shipment = new Shipment(List.of(), List.of(volume1, volume2), new CurrencyFactory(code -> true).create("RUB"));
+
+        assertEquals(BigDecimal.valueOf(150), shipment.volumeAllPackages());
+    }
+
+
 }

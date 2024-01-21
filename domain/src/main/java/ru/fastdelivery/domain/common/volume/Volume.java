@@ -12,14 +12,14 @@ public record Volume(BigInteger height, BigInteger width, BigInteger length) {
         this.width = roundToNearest50(width);
         this.length = roundToNearest50(length);
 
-        if (this.height.compareTo(MIN_DIMENSION) < 0 || this.height.compareTo(MAX_DIMENSION) > 0 ||
-                this.width.compareTo(MIN_DIMENSION) < 0 || this.width.compareTo(MAX_DIMENSION) > 0 ||
-                this.length.compareTo(MIN_DIMENSION) < 0 || this.length.compareTo(MAX_DIMENSION) > 0) {
+        if (this.height.compareTo(MIN_DIMENSION) <= 0 || this.height.compareTo(MAX_DIMENSION) > 0 ||
+                this.width.compareTo(MIN_DIMENSION) <= 0 || this.width.compareTo(MAX_DIMENSION) > 0 ||
+                this.length.compareTo(MIN_DIMENSION) <= 0 || this.length.compareTo(MAX_DIMENSION) > 0) {
             throw new IllegalArgumentException("Invalid volume dimensions");
         }
     }
 
-    private static BigInteger roundToNearest50(BigInteger value) {
+    protected static BigInteger roundToNearest50(BigInteger value) {
         return value.add(ROUNDING_VALUE.divide(BigInteger.valueOf(2)))
                 .divide(ROUNDING_VALUE)
                 .multiply(ROUNDING_VALUE);
